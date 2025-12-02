@@ -57,7 +57,7 @@ class NetworkService {
         return String(data: data, encoding: .utf8) ?? "<non-utf8 data>"
     }
     
-    // MARK: - Generic Request Method
+    // Generic Request Method
     private func request<T: Codable>(endpoint: APIEndpoint, method: String = "GET") async throws -> T {
         guard let url = endpoint.url() else {
             print("❌ Network invalidURL: \(endpoint)")
@@ -115,7 +115,7 @@ class NetworkService {
         }
     }
     
-    // MARK: - API Methods
+    // API Methods
     func fetchCoins(
         offset: Int = 0,
         limit: Int = Constants.coinsPerPage,

@@ -8,6 +8,6 @@
 import Foundation
 
 enum Secrets {
-    // CoinRanking API key
+    // CoinRanking API key - Should be kept in an secure file
     static let coinRankingAPIKey: String = "coinranking5ec72186eda715a67534ee98c9330f21877ef0be5b4d251f"
 }

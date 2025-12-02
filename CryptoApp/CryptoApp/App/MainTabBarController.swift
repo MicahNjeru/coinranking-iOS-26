@@ -30,7 +30,7 @@ class MainTabBarController: UITabBarController {
         let coinsVC = CoinsListViewController()
         let coinsNavController = UINavigationController(rootViewController: coinsVC)
         coinsNavController.tabBarItem = UITabBarItem(
-            title: "Markets",
+            title: "Cryptocurrencies",
             image: UIImage(systemName: "chart.line.uptrend.xyaxis"),
             selectedImage: UIImage(systemName: "chart.line.uptrend.xyaxis.fill")
         )
@@ -65,7 +65,7 @@ class MainTabBarController: UITabBarController {
     }
 }
 
-// MARK: - Enhanced MainTabBarController with Coordinator Pattern
+// Enhanced MainTabBarController with Coordinator Pattern
 
 protocol Coordinator {
     var navigationController: UINavigationController { get set }

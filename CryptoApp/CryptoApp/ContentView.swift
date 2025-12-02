@@ -49,7 +49,7 @@ struct CoinDetailView_Previews: PreviewProvider {
 }
 #endif
 
-// MARK: - Custom AsyncImage with Cache 
+// Custom AsyncImage with Cache
 struct CachedAsyncImage<Content: View, Placeholder: View>: View {
     let url: URL?
     let content: (Image) -> Content
@@ -90,7 +90,7 @@ struct CachedAsyncImage<Content: View, Placeholder: View>: View {
     }
 }
 
-// MARK: - Error Handling View
+// Error Handling View
 struct ErrorView: View {
     let message: String
     let retryAction: () -> Void

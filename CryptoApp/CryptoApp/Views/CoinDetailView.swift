@@ -57,13 +57,34 @@ struct CoinDetailView: View {
     
     private var headerSection: some View {
         VStack(spacing: 12) {
-            AsyncImage(url: URL(string: coin.iconUrl ?? "")) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } placeholder: {
-                Circle()
-                    .fill(Color.gray.opacity(0.3))
+            let url = URL(string: coin.iconUrl ?? "")
+            let isPNG = (url?.pathExtension.lowercased() == "png")
+            Group {
+                if !isPNG {
+                    Image(systemName: "bitcoinsign.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.blue)
+                } else {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        case .failure(_), .empty:
+                            Image(systemName: "bitcoinsign.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(.blue)
+                        @unknown default:
+                            Image(systemName: "bitcoinsign.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                }
             }
             .frame(width: 80, height: 80)
             .clipShape(Circle())

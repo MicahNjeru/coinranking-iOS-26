@@ -102,7 +102,7 @@ class CoinDetailViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Computed Properties
+    // Computed Properties
     var currentPrice: String {
         coinDetail?.price ?? coin.price
     }
