@@ -46,6 +46,17 @@ class NetworkService {
         self.session = URLSession(configuration: config)
     }
     
+    // Pretty-print JSON for debug logging
+    private func prettyJSONString(from data: Data) -> String {
+        if let object = try? JSONSerialization.jsonObject(with: data, options: []),
+           let prettyData = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]),
+           let prettyString = String(data: prettyData, encoding: .utf8) {
+            return prettyString
+        }
+        // Fallback to UTF-8 string if not valid JSON
+        return String(data: data, encoding: .utf8) ?? "<non-utf8 data>"
+    }
+    
     // MARK: - Generic Request Method
     private func request<T: Codable>(endpoint: APIEndpoint, method: String = "GET") async throws -> T {
         guard let url = endpoint.url() else {
@@ -77,7 +88,21 @@ class NetworkService {
                 print("✅ Decoded \(T.self)")
                 return decoded
             } catch {
+                #if DEBUG
+                if let httpResponse = response as? HTTPURLResponse {
+                    print("🧩 Decoding error: \(error)")
+                    print("🌐 Request: \(request.httpMethod ?? "GET") \(request.url?.absoluteString ?? "<no url>")")
+                    print("📦 Status: \(httpResponse.statusCode)")
+                    let body = prettyJSONString(from: data)
+                    print("📄 Raw Body (pretty):\n\(body)")
+                } else {
+                    print("🧩 Decoding error (no HTTPURLResponse): \(error)")
+                    let body = prettyJSONString(from: data)
+                    print("📄 Raw Body (pretty):\n\(body)")
+                }
+                #else
                 print("🧩 Decoding error: \(error)")
+                #endif
                 throw NetworkError.decodingError(error)
             }
             
@@ -119,3 +144,4 @@ class NetworkService {
         return try await request(endpoint: endpoint)
     }
 }
+

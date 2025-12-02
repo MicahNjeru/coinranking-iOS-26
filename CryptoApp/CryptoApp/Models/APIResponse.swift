@@ -77,16 +77,18 @@ struct CoinHistoryData: Codable {
 }
 
 struct PriceHistory: Codable, Identifiable {
-    let price: String
+    let price: String?
     let timestamp: Int
     
     var id: Int { timestamp }
     
     var priceValue: Double {
-        Double(price) ?? 0.0
+        guard let price = price, let value = Double(price) else { return 0.0 }
+        return value
     }
     
     var date: Date {
         Date(timeIntervalSince1970: TimeInterval(timestamp))
     }
 }
+

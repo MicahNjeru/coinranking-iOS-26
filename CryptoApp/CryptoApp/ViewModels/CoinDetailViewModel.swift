@@ -78,7 +78,14 @@ class CoinDetailViewModel: ObservableObject {
                 uuid: coinUUID,
                 timePeriod: selectedTimePeriod.rawValue
             )
-            priceHistory = response.data.history.reversed() // Reverse to show oldest first
+            // Filter out entries with nil or non-positive price values, then reverse to oldest-first
+            let filtered = response.data.history.filter { item in
+                if let priceString = item.price, let value = Double(priceString), value > 0 {
+                    return true
+                }
+                return false
+            }
+            priceHistory = filtered.reversed()
         } catch {
             errorMessage = "Failed to load price history: \(error.localizedDescription)"
         }
@@ -127,3 +134,4 @@ class CoinDetailViewModel: ObservableObject {
         isPositiveChange ? .green : .red
     }
 }
+
